@@ -34,14 +34,14 @@ func AcceptProc(lp *EventLoop, fd int, _ any) {
 }
 
 func OnceProc(lp *EventLoop, id int, arg any) {
-    t := arg.(*testing.T)
-    assert.Equal(t, 1, id)
+	t := arg.(*testing.T)
+	assert.Equal(t, 1, id)
 }
 
 func NormalProc(lp *EventLoop, id int, arg any) {
-    ch := arg.(chan struct{})
-    ch <- struct{}{}
-}  
+	ch := arg.(chan struct{})
+	ch <- struct{}{}
+}
 
 func TestEventLoop(t *testing.T) {
 	loop, err := NewEventLoop()
@@ -67,10 +67,10 @@ func TestEventLoop(t *testing.T) {
 	assert.Equal(t, 10, n)
 	assert.Equal(t, msg, string(buf))
 
-    loop.AddTimeEvent(TE_ONCE, 10, OnceProc, t)
-    end := make(chan struct{}, 2)
-    loop.AddTimeEvent(TE_PERIODIC, 10, NormalProc, end)
-    <- end
-    <- end
-    loop.stop = true
+	loop.AddTimeEvent(TE_ONCE, 10, OnceProc, t)
+	end := make(chan struct{}, 2)
+	loop.AddTimeEvent(TE_PERIODIC, 10, NormalProc, end)
+	<-end
+	<-end
+	loop.stop = true
 }

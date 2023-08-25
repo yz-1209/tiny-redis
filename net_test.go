@@ -18,25 +18,26 @@ func EchoServer(port int, ready chan struct{}, logf func(string, ...any)) {
 		logf("accept failed: %v", err)
 		return
 	}
+
+	logf("accept conn: cfd = %v", cfd)
 	buf := make([]byte, 10)
-	n, err := Read(cfd, buf)
+	_, err = Read(cfd, buf)
 	if err != nil {
 		logf("read failed: %v", err)
 		return
 	}
-	logf("read %v bytes from client", n)
-	n, err = Write(cfd, buf)
+	_, err = Write(cfd, buf)
 	if err != nil {
 		logf("write failed: %v", err)
 	}
-	logf("write %v bytes", n)
 }
 
 func TestEchoServer(t *testing.T) {
-	port := 6666
+	port := 6667
 	ready := make(chan struct{})
 	go EchoServer(port, ready, t.Logf)
 
+	t.Logf("go run echo server...")
 	<-ready
 	host := [4]byte{127, 0, 0, 1}
 	cfd, err := Connect(host, port)
