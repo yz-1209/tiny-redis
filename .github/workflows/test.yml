@@ -42,5 +42,5 @@ jobs:
           git rebase origin/main
           curl "https://img.shields.io/badge/coverage-$COVERAGE%25-$COLOR" > badge.svg
           git add .
-          git commit =m "feat: add test coverage badge"
+          git commit -m "feat: add test coverage badge"
           git push
